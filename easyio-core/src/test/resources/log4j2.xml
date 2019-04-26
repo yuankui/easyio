@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <properties>
+        <property name="LOG_HOME">${log.out.path}</property>
+        <property name="SERVER_NAME">waimai_d_service_food_server</property>
+        <property name="DEFAULT_PATTERN_LAYOUT" >%d %t %-5p (%F:%L) - %m%n</property>
+    </properties>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss.SSS} %t [%p] %c{1} (%F:%L) %msg%n" />
+        </Console>
+    </appenders>
+
+    <loggers>
+        <root level="info">
+            <appender-ref ref="Console" />
+        </root>
+    </loggers>
+</configuration>
