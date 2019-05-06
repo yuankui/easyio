@@ -53,5 +53,15 @@ public class MethodAdapterImpl implements MethodAdapter {
         }
         return params;
     }
-    
+
+    @Override
+    public <T extends Annotation> T getAnnotation(Class<T> clazz) {
+        T annotation = method.getAnnotation(clazz);
+        if (annotation != null) {
+            return annotation;
+        }
+        
+        return method.getDeclaringClass().getAnnotation(clazz);
+    }
+
 }

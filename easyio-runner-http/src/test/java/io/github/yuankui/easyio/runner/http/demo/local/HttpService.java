@@ -8,8 +8,9 @@ import io.github.yuankui.easyio.core.RunWith;
 @RunWith(HttpRunner.class)
 @Host("http://172.25.163.152:4000")
 @Header("Top-Level: OK")
+@HeaderSupply(AuthHeaderSupplier.class)
 public interface HttpService {
-    String path = "/1ibp1rs1";
+    String path = "/17i4ksc1";
 
     @Get(path)
     String test1(@Query("username") String userName);
