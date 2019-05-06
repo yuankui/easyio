@@ -1,15 +1,18 @@
 package io.github.yuankui.easyio.runner.http.providers;
 
-import io.github.yuankui.easyio.runner.http.resource.HttpRequest;
-import io.github.yuankui.easyio.runner.http.HttpProvider;
-import io.github.yuankui.easyio.runner.http.resource.HttpMethod;
-import io.github.yuankui.easyio.runner.http.resource.HttpResponse;
 import io.github.yuankui.easyio.generic.Caller;
 import io.github.yuankui.easyio.generic.provider.Depend;
 import io.github.yuankui.easyio.generic.provider.Provide;
 import io.github.yuankui.easyio.generic.provider.Provider;
+import io.github.yuankui.easyio.runner.http.HttpProvider;
+import io.github.yuankui.easyio.runner.http.resource.HttpMethod;
+import io.github.yuankui.easyio.runner.http.resource.HttpRequest;
+import io.github.yuankui.easyio.runner.http.resource.HttpResponse;
 import okhttp3.*;
 
+/**
+ * TODO 将http行为抽象成一个http engine
+ */
 @HttpProvider
 public class HttpResponseProvider implements Provider {
 
