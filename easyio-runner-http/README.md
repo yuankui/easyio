@@ -44,3 +44,7 @@ public interface HttpService {
 - `@Body`
 - `@Get` & `@Post`
 - `@Variable`: used in path placeholder
+
+## TODO
+
+- ProxyProvider(dynamic, static)
