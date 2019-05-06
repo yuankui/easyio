@@ -2,6 +2,7 @@ package io.github.yuankui.easyio.generic.manager;
 
 import com.google.common.collect.ArrayListMultimap;
 import io.github.yuankui.easyio.generic.Caller;
+import io.github.yuankui.easyio.generic.FatalException;
 import io.github.yuankui.easyio.generic.Prototype;
 import io.github.yuankui.easyio.generic.ProviderWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +70,9 @@ public class ResourceManagerImpl implements ResourceManager {
                     Caller ret = provider.provide();
                     readyMap.put(name, ret);
                 } catch (Exception e) {
+                    if (e instanceof FatalException) {
+                        throw (FatalException) e;
+                    }
                     log.info("invoke provider method error:" + provider, e);
                 }
             }

@@ -45,7 +45,7 @@ public class HeaderSupplierProvider implements Provider {
         try {
             this.supplier = context.getBean(supplierClass);
         } catch (Exception e) {
-            throw new FatalException("could not find supplier bean of type:" + supplierClass.getClass());
+            throw new FatalException("could not find supplier bean of type:" + supplierClass.getClass(), e);
         }
         return ioContext -> supplier.supply();
     }
