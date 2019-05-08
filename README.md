@@ -41,6 +41,7 @@ public class V2exServiceTest {
 - [HttpRunner](https://github.com/yuankui/easyio/tree/master/easyio-runner-http)
 
 ## TODO
+- MQRunner
 - RedisRunner
 - HBaseRunner
 - EsRunner

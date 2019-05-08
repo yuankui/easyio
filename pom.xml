@@ -12,6 +12,7 @@
     <modules>
         <module>easyio-core</module>
         <module>easyio-runner-http</module>
+        <module>easyio-runner-mq</module>
     </modules>
 
     <distributionManagement>
