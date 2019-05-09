@@ -19,4 +19,6 @@ public interface MethodAdapter {
      * 遍历annotation
      */
     List<Param> params();
+    
+    <T extends Annotation> T getAnnotation(Class<T> clazz);
 }

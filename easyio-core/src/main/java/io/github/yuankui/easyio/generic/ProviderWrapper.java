@@ -10,6 +10,7 @@ import io.github.yuankui.easyio.generic.resource.wrapper.ResourceWrapper;
 import io.github.yuankui.easyio.generic.resource.wrapper.WrapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -92,8 +93,15 @@ public class ProviderWrapper {
             Object ret = this.providerMethod.invoke(this.provider, args);
             ResourceWrapper resourceWrapper = wrapperFactory.create(this.providerMethod.getGenericReturnType());
             return resourceWrapper.wrap(ret);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Throwable target = e.getTargetException();
+            if (target instanceof RuntimeException) {
+                throw (RuntimeException) target;
+            } else {
+                throw new RuntimeException("invoke method error", target);
+            }
+        } catch (IllegalAccessException e) {
+            throw new FatalException("invoke method error", e);
         }
     }
 
