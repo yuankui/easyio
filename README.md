@@ -5,6 +5,7 @@
 ## Features
 
 - A powerful framework helps building different IO Runner easily.
+  - Easily to implement [Reactor clients](https://github.com/yuankui/easyio/blob/master/reactor.md)
 - Implemented runners
     - [HttpRunner](https://github.com/yuankui/easyio/tree/master/easyio-runner-http)
 
