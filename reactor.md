@@ -4,8 +4,11 @@
 @Runwith(ReactorHttpRunner.class)
 @RemoteApp("some.other.app.name")
 interface DemoClient {
-	Flux<Student> getStudents(Integer classId);
-	Mono<ClassInfo> getClassInfo(Integer classId);
+	@Get("/api/students/{classId}")
+	Flux<Student> getStudents(@Path("classId") Integer classId);
+	
+	@Get("/api/classInfo/{classId}")
+	Mono<ClassInfo> getClassInfo(@Path("classId") Integer classId);
 }
 
 @Controller
