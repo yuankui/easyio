@@ -1,6 +1,6 @@
 # Integrate with Reactor
  
-```
+```java
 @Runwith(ReactorHttpRunner.class)
 @RemoteApp("some.other.app.name")
 interface DemoClient {
