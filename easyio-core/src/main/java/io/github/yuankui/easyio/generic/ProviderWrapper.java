@@ -1,6 +1,7 @@
 package io.github.yuankui.easyio.generic;
 
 import io.github.yuankui.easyio.generic.manager.ResourceManager;
+import io.github.yuankui.easyio.generic.param.ParamInjector;
 import io.github.yuankui.easyio.generic.param.ParamInjectorFactory;
 import io.github.yuankui.easyio.generic.provider.Depend;
 import io.github.yuankui.easyio.generic.provider.Provide;
@@ -82,9 +83,9 @@ public class ProviderWrapper {
 
                     Depend depend = dependOptional.get();
                     Type type = this.providerMethod.getGenericParameterTypes()[i];
-                    return paramInjectorFactory.create(depend, type);
+                    ParamInjector injector = paramInjectorFactory.create(depend, type);
+                    return injector.parseParam(resourceManager);
                 })
-                .map(injector -> injector.parseParam(resourceManager))
                 .toArray();
         
         this.providerMethod.setAccessible(true);

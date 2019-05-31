@@ -2,6 +2,13 @@
 
 > performing IO the easier way.
 
+## Features
+
+- A powerful framework helps building different IO Runner easily.
+  - Easily to implement [Reactor clients](https://github.com/yuankui/easyio/blob/master/reactor.md)
+- Implemented runners
+    - [HttpRunner](https://github.com/yuankui/easyio/tree/master/easyio-runner-http)
+
 ## Get Started
 
 > io.github.yuankui.easyio.runner.http.demo.V2exServiceTest#query
@@ -35,10 +42,6 @@ public class V2exServiceTest {
     }
 }
 ```
-
-## Supported Runners
-
-- [HttpRunner](https://github.com/yuankui/easyio/tree/master/easyio-runner-http)
 
 ## TODO
 - MQRunner
