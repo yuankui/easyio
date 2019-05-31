@@ -30,7 +30,6 @@ public class ProviderWrapper {
     private MethodAdapter methodAdapter;
 
     // calculated
-    private ResourceWrapper resourceMeta;
     private String resourceName;
     private Class<? extends Provider> providerClass;
     private Method providerMethod;

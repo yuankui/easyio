@@ -5,7 +5,12 @@ import io.github.yuankui.easyio.context.IOContext;
 import java.io.IOException;
 
 /**
- * 数据可以转换
+ *
+ * 
+ * This is the resource. But the resource is not concrete objects but callable's, with which you
+ * can build real resource with ioContext.
+ *
+ * the resources can be transform:
  * 
  * T -> Supplier<T> -> Caller<T>
  * @param <T>
