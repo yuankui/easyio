@@ -18,17 +18,7 @@ public class RawResourceExtractor implements ResourceExtractor {
         this.innerType = type;
         return true;
     }
-
-    @Override
-    public Type getInnerType() {
-        return innerType;
-    }
-
-    @Override
-    public Class getWrapperType() {
-        return wrapperType;
-    }
-
+    
     /**
      * 所有对象都是caller，有些特殊的是supplier
      * @param obj

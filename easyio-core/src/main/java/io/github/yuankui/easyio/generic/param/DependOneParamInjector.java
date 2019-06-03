@@ -1,11 +1,11 @@
 package io.github.yuankui.easyio.generic.param;
 
-import io.github.yuankui.easyio.generic.resource.extractor.ExtractorFactory;
-import io.github.yuankui.easyio.generic.resource.extractor.ResourceExtractor;
 import io.github.yuankui.easyio.generic.Caller;
 import io.github.yuankui.easyio.generic.Prototype;
 import io.github.yuankui.easyio.generic.manager.ResourceManager;
 import io.github.yuankui.easyio.generic.provider.Depend;
+import io.github.yuankui.easyio.generic.resource.extractor.ExtractorFactory;
+import io.github.yuankui.easyio.generic.resource.extractor.ResourceExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
