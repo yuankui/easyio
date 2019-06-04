@@ -74,7 +74,8 @@ public class GenericExecutionPlan implements ExecutionPlan {
         // print the plan of the provider
         ResourceProvider provider = optional.get();
         provider.setSelected(true);
-        DependencyPrinter.print(provider, System.out::println);
+        log.info("execution plan for method: {}", method);
+        DependencyPrinter.print(provider, log::info);
         this.caller = provider.getCaller();
     }
 

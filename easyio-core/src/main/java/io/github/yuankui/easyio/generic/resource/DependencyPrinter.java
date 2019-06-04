@@ -23,13 +23,13 @@ public class DependencyPrinter {
     public static void print(ResourceProvider provider, Consumer<String> consumer) {
         Stream<Item> itemStream = expandProvider(provider, 0);
         itemStream.forEach(i -> {
-            consumer.accept(indent("   ", i.getIndent()) + "- " + i.getContent());
+            consumer.accept(indent(i.getIndent()) + "- " + i.getContent());
         });
     }
     
-    private static String indent(String prefix, int time) {
+    private static String indent(int time) {
         return IntStream.range(0, time)
-                .mapToObj(i -> prefix)
+                .mapToObj(i -> "   ")
                 .collect(Collectors.joining());
     }
 
