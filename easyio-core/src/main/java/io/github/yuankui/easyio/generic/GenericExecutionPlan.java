@@ -5,6 +5,7 @@ import io.github.yuankui.easyio.generic.manager.ResourceManagerImpl;
 import io.github.yuankui.easyio.generic.provider.Provider;
 import io.github.yuankui.easyio.context.IOContext;
 import io.github.yuankui.easyio.core.ExecutionPlan;
+import io.github.yuankui.easyio.generic.resource.ResourceProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,13 @@ public class GenericExecutionPlan implements ExecutionPlan {
         
         resourceManager.init(providers);
 
-        List<Caller> callers = resourceManager.getResources("result");
+        List<ResourceProvider> callers = resourceManager.getResources("result");
 
         if (CollectionUtils.isEmpty(callers)) {
             throw new RuntimeException("no provider provides <result> created for method:" + method);
         }
 
-        this.caller = callers.get(callers.size() - 1);
+        this.caller = callers.get(callers.size() - 1).getCaller();
     }
 
 

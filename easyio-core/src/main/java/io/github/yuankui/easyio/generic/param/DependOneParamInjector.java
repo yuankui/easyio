@@ -4,6 +4,8 @@ import io.github.yuankui.easyio.generic.Caller;
 import io.github.yuankui.easyio.generic.Prototype;
 import io.github.yuankui.easyio.generic.manager.ResourceManager;
 import io.github.yuankui.easyio.generic.provider.Depend;
+import io.github.yuankui.easyio.generic.resource.ResourceProvider;
+import io.github.yuankui.easyio.generic.resource.Status;
 import io.github.yuankui.easyio.generic.resource.extractor.ExtractorFactory;
 import io.github.yuankui.easyio.generic.resource.extractor.ResourceExtractor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,19 +39,14 @@ public class DependOneParamInjector implements ParamInjector {
     }
 
     @Override
-    public Object parseParam(ResourceManager resourceManager) {
-        List<Caller> resources = resourceManager.getResources(depend.value());
+    public Object parseParam(List<ResourceProvider> resources) {
         Optional<Object> resource = resources.stream()
+                .filter(r -> r.getStatus() == Status.OK)
+                .reduce((o, o2) -> o2) // 返回最后一个，优先级最高
                 .map(r -> {
-                    try {
-                        return extractor.extract(r);
-                    } catch (Exception e) {
-                        log.info("extract failed", e);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .reduce((o, o2) -> o2); // 返回最后一个，优先级最高
+                    r.setSelected(true);
+                    return extractor.extract(r.getCaller());
+                }); 
 
         if (resource.isPresent()) {
             return resource.get();

@@ -5,6 +5,7 @@ import io.github.yuankui.easyio.generic.Caller;
 import io.github.yuankui.easyio.generic.FatalException;
 import io.github.yuankui.easyio.generic.Prototype;
 import io.github.yuankui.easyio.generic.ProviderWrapper;
+import io.github.yuankui.easyio.generic.resource.ResourceProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -19,7 +20,7 @@ public class ResourceManagerImpl implements ResourceManager {
 
     private Map<String, List<ProviderWrapper>> resourceProvidersMap;
     
-    private ArrayListMultimap<String, Caller> readyMap = ArrayListMultimap.create();
+    private ArrayListMultimap<String, ResourceProvider> readyMap = ArrayListMultimap.create();
     private Set<String> readySet = new HashSet<>();
     private Set<String> doingSet = new HashSet<>();
     
@@ -42,7 +43,22 @@ public class ResourceManagerImpl implements ResourceManager {
     }
 
     @Override
-    public List<Caller> getResources(String name) {
+    public List<ResourceProvider> getResources(String name) {
+        List<ResourceProvider> resources = getInnerResources(name);
+        return resources.stream()
+                .map(r -> new ResourceProvider(
+                        r.getName(),
+                        r.getProvider(),
+                        r.getStatus(),
+                        r.getMsg(),
+                        false, // default not selected
+                        r.getCaller(),
+                        r.getDependencies()
+                ))
+                .collect(Collectors.toList());
+    }
+    
+    public List<ResourceProvider> getInnerResources(String name) {
         // 如果对应的资源已经初始化过，那么就直接返回
         if (readySet.contains(name)) {
             return readyMap.get(name);
@@ -67,7 +83,7 @@ public class ResourceManagerImpl implements ResourceManager {
             List<ProviderWrapper> providers = resourceProvidersMap.get(name);
             for (ProviderWrapper provider : providers) {
                 try {
-                    Caller ret = provider.provide();
+                    ResourceProvider ret = provider.provide();
                     readyMap.put(name, ret);
                 } catch (Exception e) {
                     if (e instanceof FatalException) {

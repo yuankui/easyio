@@ -1,5 +1,6 @@
 package io.github.yuankui.easyio.generic.resource.extractor;
 
+import io.github.yuankui.easyio.generic.FatalException;
 import io.github.yuankui.easyio.generic.Prototype;
 import io.github.yuankui.easyio.generic.Supplier;
 
@@ -29,6 +30,6 @@ public class RawResourceExtractor implements ResourceExtractor {
         if (obj instanceof Supplier) {
             return ((Supplier) obj).get();
         }
-        throw new RuntimeException("expected supplier, got:" + obj.getClass());
+        throw new FatalException("expected supplier, got:" + obj.getClass());
     }
 }

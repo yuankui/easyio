@@ -6,6 +6,8 @@ import io.github.yuankui.easyio.generic.param.ParamInjectorFactory;
 import io.github.yuankui.easyio.generic.provider.Depend;
 import io.github.yuankui.easyio.generic.provider.Provide;
 import io.github.yuankui.easyio.generic.provider.Provider;
+import io.github.yuankui.easyio.generic.resource.ResourceProvider;
+import io.github.yuankui.easyio.generic.resource.Status;
 import io.github.yuankui.easyio.generic.resource.wrapper.ResourceWrapper;
 import io.github.yuankui.easyio.generic.resource.wrapper.WrapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -64,12 +64,22 @@ public class ProviderWrapper {
     public String getResourceName() {
         return resourceName;
     }
+      public String getProviderName() {
+        return this.providerMethod.getDeclaringClass().getName();
+    }
     
     public int compareTo(ProviderWrapper that) {
         return this.provider.race(that.provider) - that.provider.race(this.provider);
     }
     
-    public Caller provide() {
+    public ResourceProvider provide() {
+        ResourceProvider resourceProvider = new ResourceProvider()
+                .setName(getResourceName())
+                .setSelected(false)
+                .setStatus(Status.OK)
+                .setProvider(getProviderName());
+
+        Map<String, List<ResourceProvider>> dependencies = new HashMap<>();
         Object[] args = IntStream.range(0, this.providerMethod.getParameterCount())
                 .mapToObj(i -> {
                     Optional<Depend> dependOptional = Arrays.stream(this.providerMethod.getParameterAnnotations()[i])
@@ -77,13 +87,15 @@ public class ProviderWrapper {
                             .map(annotation -> (Depend) annotation)
                             .findFirst();
                     if (!dependOptional.isPresent()) {
-                        throw new RuntimeException("method args without @Depend:" + this.providerMethod);
+                        throw new FatalException("method args without @Depend:" + this.providerMethod);
                     }
 
                     Depend depend = dependOptional.get();
                     Type type = this.providerMethod.getGenericParameterTypes()[i];
                     ParamInjector injector = paramInjectorFactory.create(depend, type);
-                    return injector.parseParam(resourceManager);
+                    List<ResourceProvider> resources = resourceManager.getResources(depend.value());
+                    dependencies.put(depend.value(), resources);
+                    return injector.parseParam(resources);
                 })
                 .toArray();
         
@@ -91,14 +103,17 @@ public class ProviderWrapper {
         try {
             Object ret = this.providerMethod.invoke(this.provider, args);
             ResourceWrapper resourceWrapper = wrapperFactory.create(this.providerMethod.getGenericReturnType());
-            return resourceWrapper.wrap(ret);
+            Caller caller = resourceWrapper.wrap(ret);
+            return resourceProvider
+                    .setDependencies(dependencies)
+                    .setCaller(caller);
         } catch (InvocationTargetException e) {
             Throwable target = e.getTargetException();
-            if (target instanceof RuntimeException) {
-                throw (RuntimeException) target;
-            } else {
-                throw new RuntimeException("invoke method error", target);
+            if (target instanceof FatalException) {
+                throw (FatalException) target;
             }
+            return resourceProvider.setStatus(Status.ERR)
+                    .setMsg(target.toString());
         } catch (IllegalAccessException e) {
             throw new FatalException("invoke method error", e);
         }

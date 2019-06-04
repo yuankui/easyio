@@ -1,5 +1,7 @@
 package io.github.yuankui.easyio.generic.param;
 
+import io.github.yuankui.easyio.generic.resource.ResourceProvider;
+import io.github.yuankui.easyio.generic.resource.Status;
 import io.github.yuankui.easyio.generic.resource.extractor.ExtractorFactory;
 import io.github.yuankui.easyio.generic.resource.extractor.ResourceExtractor;
 import io.github.yuankui.easyio.generic.Caller;
@@ -52,19 +54,11 @@ public class DependManyParamInjector implements ParamInjector {
     }
 
     @Override
-    public Object parseParam(ResourceManager resourceManager) {
-        List<Caller> resources = resourceManager.getResources(depend.value());
-
+    public Object parseParam(List<ResourceProvider> resources) {
         List<Object> extractResources = resources.stream()
-                .map(r -> {
-                    try {
-                        return extractor.extract(r);
-                    } catch (Exception e) {
-                        log.info("extract failed", e);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
+                .filter(r -> r.getStatus() == Status.OK)
+                .peek(r -> r.setSelected(true))
+                .map(r -> extractor.extract(r.getCaller()))
                 .collect(Collectors.toList());
 
         if (extractResources.size() < depend.least()) {
