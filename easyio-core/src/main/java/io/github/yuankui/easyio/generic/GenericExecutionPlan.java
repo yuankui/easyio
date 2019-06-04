@@ -5,7 +5,9 @@ import io.github.yuankui.easyio.generic.manager.ResourceManagerImpl;
 import io.github.yuankui.easyio.generic.provider.Provider;
 import io.github.yuankui.easyio.context.IOContext;
 import io.github.yuankui.easyio.core.ExecutionPlan;
+import io.github.yuankui.easyio.generic.resource.DependencyPrinter;
 import io.github.yuankui.easyio.generic.resource.ResourceProvider;
+import io.github.yuankui.easyio.generic.resource.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Prototype
@@ -48,13 +51,31 @@ public class GenericExecutionPlan implements ExecutionPlan {
         
         resourceManager.init(providers);
 
-        List<ResourceProvider> callers = resourceManager.getResources("result");
+        List<ResourceProvider> resourceProviders = resourceManager.getResources("result");
 
-        if (CollectionUtils.isEmpty(callers)) {
+        if (CollectionUtils.isEmpty(resourceProviders)) {
             throw new RuntimeException("no provider provides <result> created for method:" + method);
         }
 
-        this.caller = callers.get(callers.size() - 1).getCaller();
+        Optional<ResourceProvider> optional = resourceProviders.stream()
+                .filter(r -> r.getStatus() == Status.OK)
+                .reduce((o1, o2) -> o2);
+        
+        // no valid result provide found
+        if (!optional.isPresent()) {
+            String msg = "no provider provides <result> created for method:" + method;
+            log.error(msg);
+            for (ResourceProvider provider : resourceProviders) {
+                DependencyPrinter.print(provider, log::error);
+            }
+            throw new RuntimeException(msg);
+        }
+        
+        // print the plan of the provider
+        ResourceProvider provider = optional.get();
+        provider.setSelected(true);
+        DependencyPrinter.print(provider, System.out::println);
+        this.caller = provider.getCaller();
     }
 
 

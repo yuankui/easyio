@@ -65,7 +65,7 @@ public class ProviderWrapper {
         return resourceName;
     }
       public String getProviderName() {
-        return this.providerMethod.getDeclaringClass().getName();
+        return this.providerMethod.getDeclaringClass().getSimpleName();
     }
     
     public int compareTo(ProviderWrapper that) {
