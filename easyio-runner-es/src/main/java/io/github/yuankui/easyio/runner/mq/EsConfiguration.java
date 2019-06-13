@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan(includeFilters = {
-        @ComponentScan.Filter(HttpProvider.class),
+        @ComponentScan.Filter(EsProvider.class),
 }, scopeResolver = PrototypeScopeMetadataResolver.class)
 @Import(GenericConfiguration.class)
-public class HttpConfiguration {
+public class EsConfiguration {
 
 }

@@ -7,10 +7,10 @@ import io.github.yuankui.easyio.generic.filter.ProviderFilter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HttpRunner extends GenericRunner {
+public class EsRunner extends GenericRunner {
 
     @Override
     public ProviderFilter getProviderFilter() {
-        return new AnnotationProviderFilter(HttpProvider.class);
+        return new AnnotationProviderFilter(EsProvider.class);
     }
 }

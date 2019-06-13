@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.yuankui</groupId>
-    <artifactId>easyio-runner-mq</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <artifactId>easyio-runner-es</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 	
@@ -25,18 +25,12 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
-
+    
     <dependencies>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>3.10.0</version>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>7.1.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.yuankui</groupId>
