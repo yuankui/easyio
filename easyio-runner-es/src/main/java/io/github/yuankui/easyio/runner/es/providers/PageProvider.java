@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @EsProvider
-public class RawPageProvider implements Provider {
+public class PageProvider implements Provider {
 
     private int index;
 
