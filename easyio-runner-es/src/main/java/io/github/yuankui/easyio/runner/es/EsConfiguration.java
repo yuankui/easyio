@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.mq;
+package io.github.yuankui.easyio.runner.es;
 
 import io.github.yuankui.easyio.PrototypeScopeMetadataResolver;
 import io.github.yuankui.easyio.generic.GenericConfiguration;

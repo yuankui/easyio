@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.mq.resource;
+package io.github.yuankui.easyio.runner.es.resource;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package io.github.yuankui.easyio.runner.mq.providers;
+package io.github.yuankui.easyio.runner.es.providers;
 
 
 import io.github.yuankui.easyio.generic.MethodAdapter;
 import io.github.yuankui.easyio.generic.provider.Provide;
 import io.github.yuankui.easyio.generic.provider.Provider;
-import io.github.yuankui.easyio.runner.mq.EsProvider;
+import io.github.yuankui.easyio.runner.es.EsProvider;
 import org.elasticsearch.action.search.SearchResponse;
 
 import java.util.function.Function;

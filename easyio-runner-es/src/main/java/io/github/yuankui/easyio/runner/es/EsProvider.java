@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.mq;
+package io.github.yuankui.easyio.runner.es;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
