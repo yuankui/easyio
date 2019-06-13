@@ -47,7 +47,7 @@ public class V2exServiceTest {
 - MQRunner
 - RedisRunner
 - HBaseRunner
-- EsRunner
+- [EsRunner](easyio-runner-es/README.md)
 - [JDBCRunner](README-JDBC.md)
 
 ## Inspired By
