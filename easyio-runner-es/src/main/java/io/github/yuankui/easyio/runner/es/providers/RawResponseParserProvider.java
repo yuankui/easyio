@@ -14,7 +14,7 @@ public class RawResponseParserProvider implements Provider {
 
     @Override
     public void init(MethodAdapter methodAdapter) {
-        if (methodAdapter.getMethod().getReturnType() == SearchResponse.class) {
+        if (methodAdapter.getMethod().getReturnType() != SearchResponse.class) {
             throw new RuntimeException("return type not SearchResponse");
         }
     }

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class FilterSearchRequestProvider implements Provider {
 
     @Provide("request")
-    public Caller<SearchRequest> provide(@Depend("query") List<Caller<QueryBuilder>> queries) {
+    public Caller<SearchRequest> provide(@Depend(value = "query", many = true) List<Caller<QueryBuilder>> queries) {
         return ioContext -> {
             SearchRequest request = new SearchRequest();
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();

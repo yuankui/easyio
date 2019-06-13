@@ -27,7 +27,7 @@ public class PojoResponseParserProvider implements Provider {
             throw new RuntimeException("return type not generic");
         }
 
-        if (((ParameterizedType) type).getRawType() == Result.class) {
+        if (((ParameterizedType) type).getRawType() != Result.class) {
             throw new RuntimeException("return type not Result<T>");
         }
 

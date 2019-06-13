@@ -20,7 +20,7 @@ public class SearchResponseProvider implements Provider {
         
     }
 
-    @Provide("result")
+    @Provide("response")
     public Caller<SearchResponse> provide(@Depend("request") Caller<SearchRequest> request,
                                           @Depend("client") RestHighLevelClient client) {
         return ioContext -> {

@@ -33,6 +33,8 @@ public class ProviderWrapper {
     private String resourceName;
     private Class<? extends Provider> providerClass;
     private Method providerMethod;
+    
+    private Exception initException;
 
     public ProviderWrapper init(Provider provider, MethodAdapter methodAdapter, ResourceManager resourceManager) {
         this.provider = provider;
@@ -40,7 +42,11 @@ public class ProviderWrapper {
         this.methodAdapter = methodAdapter;
         this.providerClass = provider.getClass();
 
-        this.provider.init(methodAdapter);
+        try {
+            this.provider.init(methodAdapter);
+        } catch (Exception e) {
+            this.initException = e;
+        }
         
         // 1. parseProvideMethod();
         parseProvideMethod();
@@ -79,25 +85,36 @@ public class ProviderWrapper {
                 .setStatus(Status.OK)
                 .setProvider(getProviderName());
 
+        if (initException != null) {
+            return resourceProvider.setMsg(initException.getMessage())
+                    .setStatus(Status.ERR);
+        }
+        
         Map<String, List<ResourceProvider>> dependencies = new HashMap<>();
         Object[] args = IntStream.range(0, this.providerMethod.getParameterCount())
-                .mapToObj(i -> {
-                    Optional<Depend> dependOptional = Arrays.stream(this.providerMethod.getParameterAnnotations()[i])
-                            .filter(annotation -> annotation instanceof Depend)
-                            .map(annotation -> (Depend) annotation)
-                            .findFirst();
-                    if (!dependOptional.isPresent()) {
-                        throw new FatalException("method args without @Depend:" + this.providerMethod);
-                    }
+                    .mapToObj(i -> {
+                        Optional<Depend> dependOptional = Arrays.stream(this.providerMethod.getParameterAnnotations()[i])
+                                .filter(annotation -> annotation instanceof Depend)
+                                .map(annotation -> (Depend) annotation)
+                                .findFirst();
+                        if (!dependOptional.isPresent()) {
+                            throw new FatalException("method args without @Depend:" + this.providerMethod);
+                        }
 
-                    Depend depend = dependOptional.get();
-                    Type type = this.providerMethod.getGenericParameterTypes()[i];
-                    ParamInjector injector = paramInjectorFactory.create(depend, type);
-                    List<ResourceProvider> resources = resourceManager.getResources(depend.value());
-                    dependencies.put(depend.value(), resources);
-                    return injector.parseParam(resources);
-                })
-                .toArray();
+                        Depend depend = dependOptional.get();
+                        Type type = this.providerMethod.getGenericParameterTypes()[i];
+                        ParamInjector injector = paramInjectorFactory.create(depend, type);
+                        List<ResourceProvider> resources = resourceManager.getResources(depend.value());
+                        dependencies.put(depend.value(), resources);
+                        try {
+                            return injector.parseParam(resources);
+                        } catch (RuntimeException e) {
+                            resourceProvider.setMsg(e.getMessage())
+                                    .setStatus(Status.ERR);
+                        }
+                        return null;
+                    })
+                    .toArray();
         
         this.providerMethod.setAccessible(true);
         try {
@@ -116,6 +133,9 @@ public class ProviderWrapper {
                     .setMsg(target.toString());
         } catch (IllegalAccessException e) {
             throw new FatalException("invoke method error", e);
+        } catch (RuntimeException e) {
+            return resourceProvider.setStatus(Status.ERR)
+                    .setMsg(e.getMessage());
         }
     }
 

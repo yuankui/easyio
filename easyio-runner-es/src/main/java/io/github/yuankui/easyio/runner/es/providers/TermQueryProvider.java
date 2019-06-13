@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @EsProvider
 public class TermQueryProvider implements Provider {
 
-
     private List<MethodAdapter.Param> params;
 
     @Override

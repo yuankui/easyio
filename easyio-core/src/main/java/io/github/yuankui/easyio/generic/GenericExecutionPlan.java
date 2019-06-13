@@ -67,6 +67,7 @@ public class GenericExecutionPlan implements ExecutionPlan {
             log.error(msg);
             for (ResourceProvider provider : resourceProviders) {
                 DependencyPrinter.print(provider, log::error);
+                DependencyPrinter.print(provider, System.out::println);
             }
             throw new RuntimeException(msg);
         }
@@ -75,7 +76,9 @@ public class GenericExecutionPlan implements ExecutionPlan {
         ResourceProvider provider = optional.get();
         provider.setSelected(true);
         log.info("execution plan for method: {}", method);
+        log.info("execution plan for method: {}", method);
         DependencyPrinter.print(provider, log::info);
+        DependencyPrinter.print(provider, System.out::println);
         this.caller = provider.getCaller();
     }
 

@@ -30,6 +30,7 @@ public class RawResourceExtractor implements ResourceExtractor {
         if (obj instanceof Supplier) {
             return ((Supplier) obj).get();
         }
-        throw new FatalException("expected supplier, got:" + obj.getClass());
+        
+        return Supplier.of(obj);
     }
 }

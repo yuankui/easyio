@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.mq;
+package io.github.yuankui.easyio.runner.es;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.search.SearchRequest;
