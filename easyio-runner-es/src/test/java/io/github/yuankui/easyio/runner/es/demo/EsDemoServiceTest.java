@@ -2,7 +2,9 @@ package io.github.yuankui.easyio.runner.es.demo;
 
 import io.github.yuankui.easyio.core.EasyIOScan;
 import io.github.yuankui.easyio.runner.es.EsConfiguration;
+import io.github.yuankui.easyio.runner.es.resource.Page;
 import io.github.yuankui.easyio.runner.es.resource.Result;
+import org.elasticsearch.action.search.SearchResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -33,5 +35,12 @@ public class EsDemoServiceTest {
         List<Person> people = persons.getData();
 
         System.out.println("people = " + people);
+    }
+
+    @Test
+    public void findByName2() {
+        SearchResponse response = esDemoService.findByName2("yuankui", Page.page(0, 10));
+
+        System.out.println("response = " + response);
     }
 }
