@@ -12,6 +12,9 @@ public interface EsDemoService {
     Result<Person> findByName(@Term("name") String name);
     SearchResponse findByName2(@Term("name") String name, Page page);
     SearchResponse findByName3(SearchRequest request, Page page);
+    
+    // async
+    Mono<Result<Person>> findByName4(@Term("name") String name);
 }
 ```
 
@@ -75,3 +78,4 @@ execution plan for method: public abstract org.elasticsearch.action.search.Searc
 - `Result<POJO>`
 - `@Terms` (TODO)
 - `@Match` (TODO)
+- `Mono<T>`
