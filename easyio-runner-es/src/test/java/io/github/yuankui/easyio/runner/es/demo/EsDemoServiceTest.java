@@ -11,8 +11,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @Import(EsConfiguration.class)
@@ -42,5 +44,17 @@ public class EsDemoServiceTest {
         SearchResponse response = esDemoService.findByName2("yuankui", Page.page(0, 10));
 
         System.out.println("response = " + response);
+    }
+
+    @Test
+    public void findByName4() throws InterruptedException {
+        Mono<Result<Person>> mono = esDemoService.findByName4("yuankui");
+
+        mono.subscribe(r -> {
+            List<Person> people = r.getData();
+            System.out.println("people = " + people);
+        });
+
+        TimeUnit.SECONDS.sleep(5);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,13 +76,21 @@ public class GenericExecutionPlan implements ExecutionPlan {
         // print the plan of the provider
         ResourceProvider provider = optional.get();
         provider.setSelected(true);
-        log.info("execution plan for method: {}", method);
-        System.out.println("execution plan for method: " + method);
+        log.info("execution plan for method: {}", methodName(method));
+        System.out.println("execution plan for method: " + methodName(method));
         DependencyPrinter.print(provider, log::info);
         DependencyPrinter.print(provider, System.out::println);
         this.caller = provider.getCaller();
     }
 
+    private String methodName(Method method) {
+        String className = method.getDeclaringClass().getSimpleName();
+        String methodName = method.getName();
+        String params = Arrays.stream(method.getParameterTypes())
+                .map(Class::getSimpleName)
+                .collect(Collectors.joining(", "));
+        return String.format("%s#%s(%s)", className, methodName, params);
+    }
 
     @Override
     public Object execute(IOContext IOContext) throws IOException {
