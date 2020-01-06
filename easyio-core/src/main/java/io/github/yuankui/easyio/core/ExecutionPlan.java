@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 public interface ExecutionPlan {
 
-    void init(Method method);
+    void init(Method method, ProviderContext providerContext);
 
     Object execute(IOContext IOContext) throws IOException;
 }
