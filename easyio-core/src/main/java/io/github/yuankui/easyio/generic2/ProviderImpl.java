@@ -13,4 +13,9 @@ public class ProviderImpl implements Provider<String> {
         System.out.println("result = " + result);
         return result;
     }
+
+    @Override
+    public String name() {
+        return "result";
+    }
 }

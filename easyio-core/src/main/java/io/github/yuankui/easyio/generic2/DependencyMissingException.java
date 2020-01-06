@@ -1,14 +1,11 @@
 package io.github.yuankui.easyio.generic2;
 
+import lombok.Getter;
+
 public class DependencyMissingException extends Exception {
-    public DependencyMissingException() {
-    }
-
-    public DependencyMissingException(String message) {
-        super(message);
-    }
-
-    public DependencyMissingException(String message, Throwable cause) {
-        super(message, cause);
+    @Getter
+    private String name;
+    public DependencyMissingException(String name) {
+        this.name = name;
     }
 }
