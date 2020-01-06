@@ -5,4 +5,8 @@ import java.util.List;
 public interface ProcessContext {
     <T extends ResourceType> T getResource(String name, Class<T> type);
     <T extends ResourceType> List<T> getResources(String name, Class<T> type);
+    
+    <T extends ResourceType> T getResource(String name, TypeHint<T> type);
+    <T extends ResourceType> List<T> getResources(String name, TypeHint<T> type);
+    
 }
