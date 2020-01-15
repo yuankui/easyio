@@ -12,7 +12,7 @@
     <modules>
         <module>easyio-core</module>
         <module>easyio-runner-http</module>
-        <module>easyio-runner-rxsql</module>
+        <module>easyio-runner-rxjdbc</module>
     </modules>
 
     <distributionManagement>

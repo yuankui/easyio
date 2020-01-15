@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.http;
+package io.github.yuankui.easyio.runner.rxjdbc;
 
 import io.github.yuankui.easyio.generic2.GenericRunner;
 import io.github.yuankui.easyio.generic2.Provider;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class HttpRunner extends GenericRunner {
+public class RxsqlRunner extends GenericRunner {
     
     @Autowired
     private ApplicationContext context;
@@ -18,7 +18,7 @@ public class HttpRunner extends GenericRunner {
     @Override
     public List<Provider> getProviderList() {
 
-        List<Provider> providers = context.getBeansWithAnnotation(HttpProvider.class)
+        List<Provider> providers = context.getBeansWithAnnotation(RxsqlProvider.class)
                 .values()
                 .stream()
                 .filter(i -> i instanceof Provider)

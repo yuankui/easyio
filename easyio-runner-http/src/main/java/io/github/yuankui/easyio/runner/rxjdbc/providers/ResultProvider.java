@@ -1,7 +1,7 @@
-package io.github.yuankui.easyio.runner.http.providers;
+package io.github.yuankui.easyio.runner.rxjdbc.providers;
 
 import io.github.yuankui.easyio.generic2.*;
-import io.github.yuankui.easyio.runner.http.HttpProvider;
+import io.github.yuankui.easyio.runner.rxjdbc.HttpProvider;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

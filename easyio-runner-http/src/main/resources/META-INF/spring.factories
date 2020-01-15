@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.yuankui.easyio.runner.http.autoconfigure.EasyIOHttpAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.yuankui.easyio.runner.rxjdbc.autoconfigure.EasyIOHttpAutoConfiguration

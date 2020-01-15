@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.http;
+package io.github.yuankui.easyio.runner.rxjdbc;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

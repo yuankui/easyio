@@ -1,4 +1,4 @@
-package io.github.yuankui.easyio.runner.http;
+package io.github.yuankui.easyio.runner.rxjdbc;
 
 import io.github.yuankui.easyio.spring.EasyIOScan;
 import org.junit.Test;
