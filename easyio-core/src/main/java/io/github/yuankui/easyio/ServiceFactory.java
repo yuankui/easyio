@@ -18,7 +18,7 @@ public class ServiceFactory implements FactoryBean, ApplicationContextAware {
     @Override
     public Object getObject() throws Exception {
         EasyIO easyIO = context.getBean(EasyIO.class);
-        return easyIO.create(this.objectType);
+        return easyIO.create(this.objectType, null);
     }
 
     @Override

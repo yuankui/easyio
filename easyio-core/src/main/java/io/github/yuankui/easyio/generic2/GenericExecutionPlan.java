@@ -1,16 +1,21 @@
 package io.github.yuankui.easyio.generic2;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import io.github.yuankui.easyio.context.IOContext;
 import io.github.yuankui.easyio.core.ExecutionPlan;
 import io.github.yuankui.easyio.core.ProviderContext;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class GenericExecutionPlan implements ExecutionPlan {
     private final List<Provider<?>> providers;
+    private Callable callable;
 
     public GenericExecutionPlan(List<Provider<?>> providerList) {
         this.providers = providerList;
@@ -19,54 +24,67 @@ public class GenericExecutionPlan implements ExecutionPlan {
     @Override
     public void init(Method method, ProviderContext providerContext) {
 
-        Map<String, PriorityQueue<ProviderWrapper>> providers = this.providers.stream()
-                .map(ProviderWrapper::new)
-                .collect(Collectors.groupingBy(ProviderWrapper::name, Collectors.toCollection(() -> {
-                    return new PriorityQueue<ProviderWrapper>(Comparator.comparingDouble(Provider::order));
-                })));
+        // 按照resource分组，并且排好优先级，优先级低的，在前面
+        Map<String, PriorityQueue<Provider>> resourceProvidersMap = this.providers.stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.resourceName(),
+                        Collectors.toCollection(() -> {
+                            return new PriorityQueue<>((o1, o2) -> {
+                                return o1.compare(o2).getLevel() - o2.compare(o1).getLevel();
+                            });
+                        })));
 
-        Map<String, List<ProviderWrapper>> initialized = new LinkedHashMap<>();
-        
+
+        Multimap<String, Resource> initializedResources = ArrayListMultimap.create();
+        Map<Provider, Result> initResult = new LinkedHashMap<>();
+
+        // 循环provider次，就算每次只选出一个，是驴是马，也该得出结论了把？
         for (int i = 0; i < this.providers.size(); i++) {
-            for (Map.Entry<String, PriorityQueue<ProviderWrapper>> entry : providers.entrySet()) {
-                String name = entry.getKey();
-                PriorityQueue<ProviderWrapper> list = entry.getValue();
-                for (ProviderWrapper provider : list) {
-                    try {
+            for (Map.Entry<String, PriorityQueue<Provider>> entry : resourceProvidersMap.entrySet()) {
+                String resourceName = entry.getKey();
+                PriorityQueue<Provider> list = entry.getValue();
 
-                        List<String> missing = new ArrayList<>();
-                        provider.init(method, new InitContext() {
-                            @Override
-                            public <T> void addDependency(String name, TypeHint<T> resourceType) {
-                                if (!initialized.containsKey(name)) {
-                                    missing.add(name);
-                                }
-    
-                                boolean typeMatch = initialized.get(name).stream()
-                                        .allMatch(i -> i.type() == resourceType.getType());
-                                
-                                if (!typeMatch) {
-                                    throw new RuntimeException("type not match," + resourceType + " vs " + initialized.get(name));
-                                }
-                            }
-                        });
-
-                        List<ProviderWrapper> l = initialized.get(name);
-                        if (l == null) {
-                            l = new ArrayList<>();
+                // 初始化，并且删除成功初始化的
+                list.removeIf(provider -> {
+                    // 针对一个资源的初始化
+                    Result result = provider.init(method, new InitContext() {
+                        @Override
+                        public <T> void addDependency(Resource<T> provider) {
+                            // TODO 记录以来链条
                         }
-                        l.add(provider);
-                        initialized.put(name, l);
-                    } catch (DependencyMissingException e) {
-                        provider.setException(e);
+
+                        @Override
+                        public Collection<Resource> getResources(String name) {
+                            return initializedResources.get(name);
+                        }
+                    });
+
+                    if (result.isSuccess()) {
+                        initializedResources.put(resourceName, Resource.of(provider, result.getCallable()));
                     }
-                }
+
+                    initResult.put(provider, result);
+                    return result.isSuccess();
+                });
             }
+        }
+        
+        // 好了，都初始化完了，那我们我们现在需要
+
+        Optional<Resource> result = initializedResources.get("result")
+                .stream()
+                .reduce((o1, o2) -> o2);
+
+        if (result.isPresent()) {
+            this.callable = result.get().getCallable();
+        } else {
+            log.info("not result provider found: {}", initResult);
+            throw new RuntimeException("no valid callable:" + initResult);
         }
     }
 
     @Override
     public Object execute(IOContext IOContext) throws IOException {
-        return null;
+        return callable.call(IOContext);
     }
 }
