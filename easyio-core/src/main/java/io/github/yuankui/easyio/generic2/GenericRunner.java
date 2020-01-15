@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class GenericRunner implements Runner {
@@ -30,8 +31,12 @@ public class GenericRunner implements Runner {
     
     @Override
     public ExecutionPlan create(Method method) {
-        GenericExecutionPlan plan = new GenericExecutionPlan(this.providerList);
-        plan.init(method, null);
+        GenericExecutionPlan plan = new GenericExecutionPlan();
+        plan.init(method, () -> {
+            return this.providerList
+                    .stream()
+                    .collect(Collectors.toList());
+        });
         return plan;
     }
 }

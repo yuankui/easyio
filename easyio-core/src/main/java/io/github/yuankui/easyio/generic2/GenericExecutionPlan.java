@@ -14,18 +14,15 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class GenericExecutionPlan implements ExecutionPlan {
-    private final List<Provider<?>> providers;
     private Callable callable;
-
-    public GenericExecutionPlan(List<Provider<?>> providerList) {
-        this.providers = providerList;
-    }
+    
 
     @Override
     public void init(Method method, ProviderContext providerContext) {
 
+        List<Provider> providerList = providerContext.getAllProviders();
         // 按照resource分组，并且排好优先级，优先级低的，在前面
-        Map<String, PriorityQueue<Provider>> resourceProvidersMap = this.providers.stream()
+        Map<String, PriorityQueue<Provider>> resourceProvidersMap = providerList.stream()
                 .collect(Collectors.groupingBy(
                         p -> p.resourceName(),
                         Collectors.toCollection(() -> {
@@ -39,7 +36,7 @@ public class GenericExecutionPlan implements ExecutionPlan {
         Map<Provider, Result> initResult = new LinkedHashMap<>();
 
         // 循环provider次，就算每次只选出一个，是驴是马，也该得出结论了把？
-        for (int i = 0; i < this.providers.size(); i++) {
+        for (int i = 0; i < providerList.size(); i++) {
             for (Map.Entry<String, PriorityQueue<Provider>> entry : resourceProvidersMap.entrySet()) {
                 String resourceName = entry.getKey();
                 PriorityQueue<Provider> list = entry.getValue();
