@@ -2,18 +2,29 @@ package io.github.yuankui.easyio.runner.http;
 
 import io.github.yuankui.easyio.generic2.GenericRunner;
 import io.github.yuankui.easyio.generic2.Provider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class HttpRunner extends GenericRunner {
+    
+    @Autowired
+    private ApplicationContext context;
+    
     @Override
     public List<Provider> getProviderList() {
-        return Arrays.asList(
-                new ResultProvider(), 
-                new UrlProvider()
-        );
+
+        List<Provider> providers = context.getBeansWithAnnotation(HttpProvider.class)
+                .values()
+                .stream()
+                .filter(i -> i instanceof Provider)
+                .map(i -> (Provider) i)
+                .collect(Collectors.toList());
+
+        return providers;
     }
 }

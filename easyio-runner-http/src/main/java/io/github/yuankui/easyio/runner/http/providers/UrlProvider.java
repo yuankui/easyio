@@ -1,12 +1,16 @@
-package io.github.yuankui.easyio.runner.http;
+package io.github.yuankui.easyio.runner.http.providers;
 
 import io.github.yuankui.easyio.generic2.InitContext;
 import io.github.yuankui.easyio.generic2.Provider;
 import io.github.yuankui.easyio.generic2.Result;
+import io.github.yuankui.easyio.runner.http.HttpProvider;
 import io.github.yuankui.easyio.runner.http.annotations.Get;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+@HttpProvider
+@Component
 public class UrlProvider implements Provider<String> {
     @Override
     public Result<String> init(Method method, InitContext context) {
