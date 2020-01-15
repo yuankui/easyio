@@ -1,13 +1,12 @@
-package io.github.yuankui.easyio;
+package io.github.yuankui.easyio.spring;
 
 import io.github.yuankui.easyio.core.EasyIO;
-
+import io.github.yuankui.easyio.core.Runner;
+import lombok.Setter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import lombok.Setter;
 
 public class ServiceFactory implements FactoryBean, ApplicationContextAware {
 
@@ -17,8 +16,9 @@ public class ServiceFactory implements FactoryBean, ApplicationContextAware {
 
     @Override
     public Object getObject() throws Exception {
-        EasyIO easyIO = context.getBean(EasyIO.class);
-        return easyIO.create(this.objectType, null);
+        RunWith runWith = objectType.getAnnotation(RunWith.class);
+        Runner runner = context.getBean(runWith.value());
+        return EasyIO.create(this.objectType, runner);
     }
 
     @Override

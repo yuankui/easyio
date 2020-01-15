@@ -1,4 +1,6 @@
-package io.github.yuankui.easyio.core;
+package io.github.yuankui.easyio.spring;
+
+import io.github.yuankui.easyio.core.Runner;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface EasyIOScan {
+public @interface RunWith {
 
-    String[] value();
+    Class<? extends Runner> value();
 }

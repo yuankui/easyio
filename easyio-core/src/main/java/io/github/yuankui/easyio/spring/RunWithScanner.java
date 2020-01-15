@@ -1,5 +1,6 @@
-package io.github.yuankui.easyio.core;
+package io.github.yuankui.easyio.spring;
 
+import io.github.yuankui.easyio.spring.RunWith;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;

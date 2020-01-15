@@ -1,7 +1,6 @@
-package io.github.yuankui.easyio.core;
+package io.github.yuankui.easyio.spring;
 
 
-import io.github.yuankui.easyio.ServiceFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
