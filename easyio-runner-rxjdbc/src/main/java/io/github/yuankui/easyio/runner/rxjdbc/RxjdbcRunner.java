@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class RxsqlRunner extends GenericRunner {
+public class RxjdbcRunner extends GenericRunner {
     
     @Autowired
     private ApplicationContext context;
@@ -18,7 +18,7 @@ public class RxsqlRunner extends GenericRunner {
     @Override
     public List<Provider> getProviderList() {
 
-        List<Provider> providers = context.getBeansWithAnnotation(RxsqlProvider.class)
+        List<Provider> providers = context.getBeansWithAnnotation(RxjdbcProvider.class)
                 .values()
                 .stream()
                 .filter(i -> i instanceof Provider)

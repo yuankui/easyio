@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import(EasyIOConfiguration.class)
 @ComponentScan
-public class RxsqlRunnerConfiguration {
+public class RxjdbcRunnerConfiguration {
 }

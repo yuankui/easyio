@@ -3,17 +3,18 @@ package io.github.yuankui.easyio.runner.rxjdbc.demo;
 import io.github.yuankui.easyio.generic2.InitContext;
 import io.github.yuankui.easyio.generic2.Provider;
 import io.github.yuankui.easyio.generic2.Result;
-import io.github.yuankui.easyio.runner.rxjdbc.RxsqlProvider;
+import io.github.yuankui.easyio.runner.rxjdbc.RxjdbcProvider;
 import org.davidmoten.rx.jdbc.Database;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-@RxsqlProvider
+@RxjdbcProvider
 @Component
 public class MyDatabaseProvider implements Provider<Database> {
     @Override
     public Result<Database> init(Method method, InitContext context) {
+        //language=TEXT
         String url = "jdbc:mysql://10.24.76.171:5002/waimai_d_profileplatform" +
                 "?characterEncoding=UTF8" +
                 "&socketTimeout=60000" +

@@ -5,14 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import io.github.yuankui.easyio.generic2.InitContext;
 import io.github.yuankui.easyio.generic2.Provider;
 import io.github.yuankui.easyio.generic2.Result;
-import io.github.yuankui.easyio.runner.rxjdbc.RxsqlProvider;
+import io.github.yuankui.easyio.runner.rxjdbc.RxjdbcProvider;
 import org.davidmoten.rx.jdbc.Database;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
-@RxsqlProvider
+@RxjdbcProvider
 @Component
 public class DatabaseProvider implements Provider<Database> {
     @Override

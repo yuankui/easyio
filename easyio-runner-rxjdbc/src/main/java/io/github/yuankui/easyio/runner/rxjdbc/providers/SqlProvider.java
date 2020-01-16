@@ -3,13 +3,13 @@ package io.github.yuankui.easyio.runner.rxjdbc.providers;
 import io.github.yuankui.easyio.generic2.InitContext;
 import io.github.yuankui.easyio.generic2.Provider;
 import io.github.yuankui.easyio.generic2.Result;
-import io.github.yuankui.easyio.runner.rxjdbc.RxsqlProvider;
+import io.github.yuankui.easyio.runner.rxjdbc.RxjdbcProvider;
 import io.github.yuankui.easyio.runner.rxjdbc.annotations.Sql;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-@RxsqlProvider
+@RxjdbcProvider
 @Component
 public class SqlProvider implements Provider<String> {
     @Override

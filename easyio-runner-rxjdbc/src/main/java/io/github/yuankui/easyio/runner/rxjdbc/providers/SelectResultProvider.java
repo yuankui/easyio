@@ -2,9 +2,8 @@ package io.github.yuankui.easyio.runner.rxjdbc.providers;
 
 import com.alibaba.fastjson.JSONObject;
 import io.github.yuankui.easyio.generic2.*;
-import io.github.yuankui.easyio.runner.rxjdbc.RxsqlProvider;
+import io.github.yuankui.easyio.runner.rxjdbc.RxjdbcProvider;
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import org.apache.commons.lang3.tuple.Pair;
 import org.davidmoten.rx.jdbc.Database;
 import org.davidmoten.rx.jdbc.SelectBuilder;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-@RxsqlProvider
+@RxjdbcProvider
 @Component
 public class SelectResultProvider implements Provider<Object> {
     @Override

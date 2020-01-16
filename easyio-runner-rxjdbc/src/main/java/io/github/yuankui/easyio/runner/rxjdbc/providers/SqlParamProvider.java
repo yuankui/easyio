@@ -3,7 +3,7 @@ package io.github.yuankui.easyio.runner.rxjdbc.providers;
 import io.github.yuankui.easyio.generic2.InitContext;
 import io.github.yuankui.easyio.generic2.Provider;
 import io.github.yuankui.easyio.generic2.Result;
-import io.github.yuankui.easyio.runner.rxjdbc.RxsqlProvider;
+import io.github.yuankui.easyio.runner.rxjdbc.RxjdbcProvider;
 import io.github.yuankui.easyio.runner.rxjdbc.annotations.Param;
 import io.github.yuankui.easyio.runner.rxjdbc.rx.Utils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RxsqlProvider
+@RxjdbcProvider
 @Component
 public class SqlParamProvider implements Provider<List<Object>> {
     @Override
