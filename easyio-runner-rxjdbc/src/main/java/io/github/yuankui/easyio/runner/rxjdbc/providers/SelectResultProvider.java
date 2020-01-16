@@ -10,8 +10,6 @@ import org.davidmoten.rx.jdbc.SelectBuilder;
 import org.davidmoten.rx.jdbc.exceptions.SQLRuntimeException;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
