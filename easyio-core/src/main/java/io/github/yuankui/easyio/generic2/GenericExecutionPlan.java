@@ -37,6 +37,8 @@ public class GenericExecutionPlan implements ExecutionPlan {
 
         // 循环provider次，就算每次只选出一个，是驴是马，也该得出结论了把？
         for (int i = 0; i < providerList.size(); i++) {
+            // 最后一次机会
+            final boolean lastChance = i == providerList.size() - 1;
             for (Map.Entry<String, PriorityQueue<Provider>> entry : resourceProvidersMap.entrySet()) {
                 String resourceName = entry.getKey();
                 PriorityQueue<Provider> list = entry.getValue();
@@ -48,6 +50,11 @@ public class GenericExecutionPlan implements ExecutionPlan {
                         @Override
                         public <T> void addDependency(Resource<T> provider) {
                             // TODO 记录以来链条
+                        }
+
+                        @Override
+                        public boolean lastChance() {
+                            return lastChance;
                         }
 
                         @Override
