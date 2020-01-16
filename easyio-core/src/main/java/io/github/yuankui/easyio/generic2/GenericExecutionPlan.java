@@ -76,6 +76,10 @@ public class GenericExecutionPlan implements ExecutionPlan {
             this.callable = result.get().getCallable();
         } else {
             log.info("not result provider found: {}", initResult);
+            System.err.println("initResult:");
+            initResult.forEach((provider, result1) -> {
+                System.out.println(provider.getClass().getName() + "=>" + result1);
+            });
             throw new RuntimeException("no valid callable:" + initResult);
         }
     }
