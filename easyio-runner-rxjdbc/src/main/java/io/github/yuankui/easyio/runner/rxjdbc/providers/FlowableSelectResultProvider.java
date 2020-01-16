@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 @RxjdbcProvider
 @Component
-public class SelectResultProvider implements Provider<Object> {
+public class FlowableSelectResultProvider implements Provider<Object> {
     @Override
     public Result<Object> init(Method method, InitContext context) {
 
