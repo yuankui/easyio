@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 public class DatabaseProvider implements Provider<Database> {
     @Override
     public Result<Database> init(Method method, InitContext context) {
-        InputStream stream = DatabaseProvider.class.getResourceAsStream("/easyio/rxjdbc/database.yml");
+        InputStream stream = DatabaseProvider.class.getResourceAsStream("/easyio/rxjdbc/database.json");
         try {
             JSONObject json = JSON.parseObject(stream, JSONObject.class);
             return Result.success(ioContext -> Database.from(
