@@ -22,12 +22,12 @@ public class FluxSelectResultProvider implements Provider<Flux<Object>> {
         Type genericReturnType = method.getGenericReturnType();
         if (genericReturnType instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) genericReturnType;
-            if (parameterizedType.getRawType() != Flowable.class) {
-                return Result.fail("return type not Flowable");
+            if (parameterizedType.getRawType() != Flux.class) {
+                return Result.fail("return type not Flux");
             }
             type = parameterizedType.getActualTypeArguments()[0];
         } else {
-            return Result.fail("return type not Flowable<T>");
+            return Result.fail("return type not Flux<T>");
         }
 
         Collection<Resource<Flowable<JSONObject>>> selectResult = context.getResources("selectResult");

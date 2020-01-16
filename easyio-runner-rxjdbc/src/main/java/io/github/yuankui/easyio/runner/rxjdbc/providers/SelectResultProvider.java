@@ -8,8 +8,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.davidmoten.rx.jdbc.Database;
 import org.davidmoten.rx.jdbc.SelectBuilder;
 import org.davidmoten.rx.jdbc.exceptions.SQLRuntimeException;
-import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -25,7 +23,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @RxjdbcProvider
-@Component
 public class SelectResultProvider implements Provider<Flowable<JSONObject>> {
     @Override
     public Result<Flowable<JSONObject>> init(Method method, InitContext context) {
@@ -56,19 +53,7 @@ public class SelectResultProvider implements Provider<Flowable<JSONObject>> {
                 .findFirst()
                 .get()
                 .getCallable();
-
-        // return type
-        Type type;
-        Type genericReturnType = method.getGenericReturnType();
-        if (genericReturnType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) genericReturnType;
-            if (parameterizedType.getRawType() != Flowable.class) {
-                return Result.fail("return type not Flowable");
-            }
-            type = parameterizedType.getActualTypeArguments()[0];
-        } else {
-            return Result.fail("return type not Flowable<T>");
-        }
+        
         return Result.success(ioContext -> {
             Database database = databaseCallable.call(ioContext);
             String sql = sqlCallable.call(ioContext);
