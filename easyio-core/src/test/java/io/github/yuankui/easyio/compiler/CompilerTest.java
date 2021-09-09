@@ -5,8 +5,6 @@ import org.junit.Test;
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-import java.io.File;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
@@ -17,17 +15,19 @@ import java.util.concurrent.Callable;
  * https://www.soulmachine.me/blog/2015/07/22/compile-and-run-java-source-code-in-memory/
  */
 public class CompilerTest {
-    private static String getClassPath() {
+    private String getClassPath() {
         return System.getProperty("java.class.path");
     }
 
-    public static void main(String[] arg) throws Exception {
-
+    @Test
+    public void test() throws Throwable {
         Class a = ReturnCallable.class;
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null,null,null);
 
-        String code = "import java.util.concurrent.Callable;\n" +
+        //language=JAVA
+        String code = "package test;\n" +
+                "import java.util.concurrent.Callable;\n" +
                 "import io.github.yuankui.easyio.compiler.ReturnCallable;\n" +
                 "\n" +
                 "public class DynamicCallable implements ReturnCallable {\n" +
@@ -44,14 +44,14 @@ public class CompilerTest {
 
         List<String> args = Arrays.asList("-classpath", getClassPath());
         JavaCompiler.CompilationTask task = compiler.getTask(null, memoryJavaFileManager, null, args, null,
-                Arrays.asList(new JavaFileObjectFromString("test.DynamicCallable", code)));
+                Arrays.asList(new JavaFileObjectFromString("DynamicCallable", code)));
 
         Boolean res = task.call();
 
         URLClassLoader classLoader = new MemoryClassLoader(memoryJavaFileManager.getClassBytes());
 
         System.out.println("res = " + res);
-        Class<?> clazz = classLoader.loadClass("DynamicCallable");
+        Class<?> clazz = classLoader.loadClass("test.DynamicCallable");
         System.out.println("clazz = " + clazz);
 
         ReturnCallable o = (ReturnCallable) clazz.newInstance();
@@ -61,10 +61,5 @@ public class CompilerTest {
 
 
         System.out.println("stringCallable = " + stringCallable.call());
-
-    }
-    @Test
-    public void test() throws Throwable {
-
     }
 }
