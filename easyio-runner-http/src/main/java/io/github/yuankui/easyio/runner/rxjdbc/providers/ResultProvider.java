@@ -1,6 +1,10 @@
 package io.github.yuankui.easyio.runner.rxjdbc.providers;
 
-import io.github.yuankui.easyio.generic2.*;
+import io.github.yuankui.easyio.generic2.Callable;
+import io.github.yuankui.easyio.generic2.InitContext;
+import io.github.yuankui.easyio.generic2.Provider;
+import io.github.yuankui.easyio.generic2.Resource;
+import io.github.yuankui.easyio.generic2.Result;
 import io.github.yuankui.easyio.runner.rxjdbc.HttpProvider;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,16 +23,16 @@ public class ResultProvider implements Provider<Object> {
     public Result<Object> init(Method method, InitContext context) {
         Collection<Resource<String>> urls = context.getResources("url");
         Optional<Callable<String>> first = urls.stream()
-                .map(r -> r.getCallable())
-                .findFirst();
+            .map(r -> r.getCallable())
+            .findFirst();
 
         if (first.isPresent()) {
             return Result.success(ioContext -> {
                 OkHttpClient client = new OkHttpClient();
                 String url = first.get().call(ioContext);
                 Request request = new Request.Builder()
-                        .url(url)
-                        .build();
+                    .url(url)
+                    .build();
 
                 try (Response response = client.newCall(request).execute()) {
                     return response.body().string();
