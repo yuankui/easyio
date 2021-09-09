@@ -1,5 +1,6 @@
-package io.github.yuankui.easyio.runner.rxjdbc;
+package io.github.yuankui.easyio.runner.http;
 
+import io.github.yuankui.easyio.runner.rxjdbc.HttpRunner;
 import io.github.yuankui.easyio.runner.rxjdbc.annotations.Get;
 import io.github.yuankui.easyio.spring.RunWith;
 

@@ -1,5 +1,6 @@
-package io.github.yuankui.easyio.runner.rxjdbc;
+package io.github.yuankui.easyio.runner.http;
 
+import io.github.yuankui.easyio.runner.rxjdbc.HttpRunnerConfiguration;
 import io.github.yuankui.easyio.spring.EasyIOScan;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
